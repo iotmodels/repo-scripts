@@ -1,12 +1,12 @@
 {
   "name": "@iotmodels/repo-scripts",
-  "version": "1.0.0",
+  "version": "0.0.5",
   "description": "",
   "main": "dtmi2path.js",
   "type": "module",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "prepublish": "standard && npm test"
+    "prepare": "standard && npm test"
   },
   "repository": {
     "type": "git",
