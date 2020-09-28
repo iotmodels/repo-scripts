@@ -4,8 +4,6 @@ import jsonata from 'jsonata'
 import { dtmi2path } from './dtmi2path.js'
 export { dtmi2path } from './dtmi2path.js'
 
-
-
 export /**
  * @description Returns external IDs in extend and component schemas
  * @param {{ extends: any[]; contents: any[]; }} rootJson
@@ -36,6 +34,7 @@ const getDependencies = dtdlJson => {
 export/**
  * @description Validates all internal IDs follow the namepspace set by the root id
  * @param {any} dtdlJson
+ * @returns {boolean}
  */
 const checkIds = dtdlJson => {
   const rootId = dtdlJson['@id']
