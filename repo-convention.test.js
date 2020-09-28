@@ -10,7 +10,7 @@ test('invalid dtmi', () => {
   expect(dtmi2path('notadtmi')).toBe('NOT-VALID-DTMI')
   expect(dtmi2path('dtmi:notadtmi')).toBe('NOT-VALID-DTMI')
   expect(dtmi2path('dtmi:com:example:thermostat:1')).toBe('NOT-VALID-DTMI')
-  expect(dtmi2path('dtmi:com:example-bad:thermostat:1')).toBe('NOT-VALID-DTMI')
+  expect(dtmi2path('dtmi:com:example-bad:thermostat;1')).toBe('NOT-VALID-DTMI')
 })
 
 test('dtmi to path', () => {
@@ -19,8 +19,9 @@ test('dtmi to path', () => {
 })
 
 test('get dependencies', () => {
-  expect(getDependencies(readFile('dtmi/test/onedep-1.json'))).toEqual(['dtmi:test:base;1', 'dtmi:test:onedep:comp1;1'])
   expect(getDependencies(readFile('dtmi/test/uniqueids-1.json'))).toEqual([])
+  expect(getDependencies(readFile('dtmi/test/onedep-1.json'))).toEqual(['dtmi:test:base;1'])
+  expect(getDependencies(readFile('dtmi/test/twodeps-1.json'))).toEqual(['dtmi:test:base;1', 'dtmi:test:onedep:comp1;1'])
 })
 
 test('check ids', () => {
