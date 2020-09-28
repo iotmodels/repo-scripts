@@ -1,5 +1,5 @@
 {
-  "name": "repo-scripts",
+  "name": "@iotmodels/repo-scripts",
   "version": "1.0.0",
   "description": "",
   "main": "dtmi2path.js",
