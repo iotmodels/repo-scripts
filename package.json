@@ -1,5 +1,5 @@
 {
-  "name": "@iotmodels/repo-scripts",
+  "name": "@ridomin/repo-scripts",
   "version": "0.0.5",
   "description": "",
   "main": "dtmi2path.js",
