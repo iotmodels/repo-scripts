@@ -9,15 +9,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/iotmodels/tools.git"
+    "url": "git+https://github.com/iotmodels/repo-scripts/.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/iotmodels/tools/issues"
+    "url": "https://github.com/iotmodels/repo-scripts/issues"
   },
-  "homepage": "https://github.com/iotmodels/tools#readme",
+  "homepage": "https://github.com/iotmodels/repo-scripts/#readme",
   "devDependencies": {
     "jest": "^26.4.2"
   },
