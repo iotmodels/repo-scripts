@@ -1,6 +1,9 @@
 import fs from 'fs'
 import { dtmi2path, getDependencies, checkIds, checkDtmiPathFromFile } from './repo-convention.js'
 
+/**
+ * @param {string} file
+ */
 const readFile = file => {
   return JSON.parse(fs.readFileSync(file, 'utf-8'))
 }

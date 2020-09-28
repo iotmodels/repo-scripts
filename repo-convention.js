@@ -6,7 +6,7 @@ export { dtmi2path } from './dtmi2path.js'
 
 export /**
  * @description Returns external IDs in extend and component schemas
- * @param {{ extends: any[]; contents: any[]; }} rootJson
+ * @param {any}} rootJson
  * @returns {Array<string>}
  */
 const getDependencies = dtdlJson => {
