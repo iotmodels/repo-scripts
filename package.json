@@ -1,0 +1,27 @@
+{
+  "name": "tools",
+  "version": "1.0.0",
+  "description": "",
+  "main": "dtmi2path.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iotmodels/tools.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iotmodels/tools/issues"
+  },
+  "homepage": "https://github.com/iotmodels/tools#readme",
+  "devDependencies": {
+    "jest": "^26.4.2"
+  },
+  "dependencies": {
+    "jsonata": "^1.8.3"
+  }
+}

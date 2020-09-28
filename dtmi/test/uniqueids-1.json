@@ -1,0 +1,14 @@
+{
+  "@context": "dtmi:dtdl:context;2",
+  "@id": "dtmi:test:uniqueids;1",
+  "@type": "Interface",
+  "displayName": "onedep",
+  "contents": [
+    {
+      "@id": "dtmi:test:prop;1",
+      "@type": "Property",
+      "name": "withId",
+      "schema": "string"
+    }
+  ]
+}
