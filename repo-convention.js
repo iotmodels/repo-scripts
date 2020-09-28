@@ -44,8 +44,8 @@ const checkIds = dtdlJson => {
     for (const id in ids) {
       console.log('found: ' + id)
       if (!id.split(';')[0].startsWith(rootId.split(';')[0])) {
-       console.log(`ERROR: Document id ${id} does not satisfy the root id ${rootId}`)
-       return false
+        console.log(`ERROR: Document id ${id} does not satisfy the root id ${rootId}`)
+        return false
       }
     }
     console.log(`checkIds: validated ${ids.length} ids`)

@@ -5,7 +5,8 @@
   "main": "dtmi2path.js",
   "type": "module",
   "scripts": {
-    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js"
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "prepublish": "standard && npm test"
   },
   "repository": {
     "type": "git",
@@ -19,9 +20,15 @@
   },
   "homepage": "https://github.com/iotmodels/repo-scripts/#readme",
   "devDependencies": {
-    "jest": "^26.4.2"
+    "jest": "^26.4.2",
+    "standard": "^14.3.4"
   },
   "dependencies": {
     "jsonata": "^1.8.3"
+  },
+  "standard" : {
+    "globals" : [
+      "test", "expect"
+    ]
   }
 }

@@ -6,6 +6,7 @@ const readFile = file => {
 }
 
 test('invalid dtmi', () => {
+  expect(dtmi2path('')).toBe('NOT-VALID-DTMI')
   expect(dtmi2path('notadtmi')).toBe('NOT-VALID-DTMI')
   expect(dtmi2path('dtmi:notadtmi')).toBe('NOT-VALID-DTMI')
   expect(dtmi2path('dtmi:com:example:thermostat:1')).toBe('NOT-VALID-DTMI')
