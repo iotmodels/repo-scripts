@@ -1,4 +1,4 @@
-const noDepsJson = {
+export const noDepsJson = {
   '@context': 'dtmi:dtdl:context;2',
   '@id': 'dtmi:test:onedep;1',
   '@type': 'Interface',
@@ -6,7 +6,7 @@ const noDepsJson = {
   contents: []
 }
 
-const oneDepJson = {
+export const oneDepJson = {
   '@context': 'dtmi:dtdl:context;2',
   '@id': 'dtmi:test:onedep;1',
   '@type': 'Interface',
@@ -15,7 +15,7 @@ const oneDepJson = {
   contents: []
 }
 
-const globalId = {
+export const globalId = {
   '@context': 'dtmi:dtdl:context;2',
   '@id': 'dtmi:test:twodeps;1',
   '@type': 'Interface',
@@ -31,7 +31,7 @@ const globalId = {
   ]
 }
 
-const twoDepsJsonExtendsArray = {
+export const twoDepsJsonExtendsArray = {
   '@context': 'dtmi:dtdl:context;2',
   '@id': 'dtmi:test:twodeps;1',
   '@type': 'Interface',
@@ -46,7 +46,7 @@ const twoDepsJsonExtendsArray = {
   ]
 }
 
-const twoDepsJson = {
+export const twoDepsJson = {
   '@context': 'dtmi:dtdl:context;2',
   '@id': 'dtmi:test:twodeps;1',
   '@type': 'Interface',
@@ -60,5 +60,3 @@ const twoDepsJson = {
     }
   ]
 }
-
-module.exports = { noDepsJson, oneDepJson, twoDepsJson, twoDepsJsonExtendsArray, globalId }

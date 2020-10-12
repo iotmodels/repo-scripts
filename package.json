@@ -29,6 +29,10 @@
   "standard" : {
     "globals" : [
       "test", "expect"
+    ],
+    "ignore" : [
+      "out/*",
+      "*.d.ts"
     ]
   }
 }

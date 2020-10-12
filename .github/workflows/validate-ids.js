@@ -1,5 +1,6 @@
-const path = require('path')
-const fs = require('fs')
+import fs from 'fs'
+import path from 'path'
+
 const { checkIds } = require('../../repo-convention')
 
 for (let i = 2; i < process.argv.length; i++) {

@@ -1,26 +1,26 @@
-const fs = require('fs')
-const path = require('path')
-const jsonata = require('jsonata')
+import fs from 'fs'
+import path from 'path'
+import jsonata from 'jsonata'
 
 /**
  * @description Validates DTMI with RegEx from https://github.com/Azure/digital-twin-model-identifier#validation-regular-expressions
  * @param {string} dtmi
  */
-const isDtmi = dtmi => RegExp('^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$').test(dtmi)
+export const isDtmi = dtmi => RegExp('^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$').test(dtmi)
 
 /**
  * @description Converts DTMI to /dtmi/com/example/device-1.json path.
  * @param {string} dtmi
  * @returns {string}
  */
-const dtmiToPath = dtmi => isDtmi(dtmi) ? `/${dtmi.toLowerCase().replace(/:/g, '/').replace(';', '-')}.json` : null
+export const dtmiToPath = dtmi => isDtmi(dtmi) ? `/${dtmi.toLowerCase().replace(/:/g, '/').replace(';', '-')}.json` : null
 
 /**
  * @description Returns external IDs in `extend` and `component` elements
  * @param {{ extends: any[]; contents: any[]; }} rootJson
  * @returns {Array<string>}
  */
-const getDependencies = rootJson => {
+export const getDependencies = rootJson => {
   let deps = []
   if (Array.isArray(rootJson)) {
     deps = rootJson.map(d => d['@id'])
@@ -51,7 +51,7 @@ const getDependencies = rootJson => {
  * @param {Array<string>} deps
  * @returns {boolean}
  */
-const checkDependencies = dtmi => {
+export const checkDependencies = dtmi => {
   let result = true
   const fileName = path.join(__dirname, dtmiToPath(dtmi))
   console.log(`Validating dependencies for ${dtmi} from ${fileName}`)
@@ -79,7 +79,7 @@ const checkDependencies = dtmi => {
  * @param {any} dtdlJson
  * @returns {boolean}
  */
-const checkIds = dtdlJson => {
+export const checkIds = dtdlJson => {
   const rootId = dtdlJson['@id']
   console.log(`checkIds: validating root ${rootId}`)
   const ids = jsonata('**."@id"').evaluate(dtdlJson)
@@ -105,7 +105,7 @@ const checkIds = dtdlJson => {
  * @param {string} file
  * @returns {boolean}
  */
-const checkDtmiPathFromFile = file => {
+export const checkDtmiPathFromFile = file => {
   const model = JSON.parse(fs.readFileSync(file, 'utf-8'))
   const id = model['@id']
   if (id) {
@@ -122,4 +122,4 @@ const checkDtmiPathFromFile = file => {
     return false
   }
 }
-module.exports = { dtmiToPath, isDtmi, checkIds, getDependencies, checkDependencies, checkDtmiPathFromFile }
+// module.exports = { dtmiToPath, isDtmi, checkIds, getDependencies, checkDependencies, checkDtmiPathFromFile }

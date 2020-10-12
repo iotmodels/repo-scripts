@@ -1,5 +1,5 @@
-const rc = require('../repo-convention.js')
-const td = require('./test-models')
+import * as rc from '../repo-convention.js'
+import * as td from './test-models'
 
 test('invalid dtmi', () => {
   expect(rc.dtmiToPath('')).toBe(null)
@@ -27,6 +27,6 @@ test('check ids', () => {
 })
 
 test('checkDtmiPathFromFile', () => {
-  expect(rc.checkDtmiPathFromFile('../dtmi/test/onedep-1.json')).toBe(true)
-  expect(rc.checkDtmiPathFromFile('badpath.json')).toBe(false)
+  expect(rc.checkDtmiPathFromFile('dtmi/test/onedep-1.json')).toBe(true)
+  expect(rc.checkDtmiPathFromFile('test/badpath.json')).toBe(false)
 })
