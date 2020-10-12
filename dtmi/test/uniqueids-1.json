@@ -2,7 +2,7 @@
   "@context": "dtmi:dtdl:context;2",
   "@id": "dtmi:test:uniqueids;1",
   "@type": "Interface",
-  "displayName": "onedep",
+  "displayName": "onedep1",
   "contents": [
     {
       "@id": "dtmi:test:prop;1",
