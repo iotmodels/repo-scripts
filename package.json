@@ -2,7 +2,7 @@
   "name": "@ridomin/repo-scripts",
   "version": "0.0.5",
   "description": "",
-  "main": "dtmi2path.js",
+  "main": "repo-convention.js",
   "type": "module",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",

@@ -18,6 +18,7 @@ test('get dependencies', () => {
   expect(rc.getDependencies(td.noDepsJson)).toEqual([])
   expect(rc.getDependencies(td.oneDepJson)).toEqual(['dtmi:test:base;1'])
   expect(rc.getDependencies(td.twoDepsJson)).toEqual(['dtmi:test:base;1', 'dtmi:test:onedep:comp1;1'])
+  expect(rc.getDependencies(td.twoDepsJsonExtendsArray)).toEqual(['dtmi:test:base;1', 'dtmi:test:onedep:comp1;1'])
 })
 
 test('check ids', () => {

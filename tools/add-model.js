@@ -25,7 +25,7 @@ const createInterfaceFromJson = jsonDtdl => {
  * @description Adds a model to the repo. Validates ids, dependencies and set the right folder/file name
  * @param {string} file
  */
-const addModel = (file) => {
+const addModel = file => {
   const rootJson = JSON.parse(fs.readFileSync(file, 'utf-8'))
 
   if (Array.isArray(rootJson)) {

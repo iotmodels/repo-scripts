@@ -13,13 +13,7 @@ const isDtmi = dtmi => RegExp('^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A
  * @param {string} dtmi
  * @returns {string}
  */
-const dtmiToPath = dtmi => {
-  if (!isDtmi(dtmi)) {
-    return null
-  }
-  // dtmi:com:example:Thermostat;1 -> dtmi/com/example/thermostat-1.json
-  return `/${dtmi.toLowerCase().replace(/:/g, '/').replace(';', '-')}.json`
-}
+const dtmiToPath = dtmi => isDtmi(dtmi) ? `/${dtmi.toLowerCase().replace(/:/g, '/').replace(';', '-')}.json` : null
 
 /**
  * @description Returns external IDs in `extend` and `component` elements
