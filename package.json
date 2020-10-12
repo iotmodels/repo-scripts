@@ -1,12 +1,13 @@
 {
-  "name": "@ridomin/repo-scripts",
+  "name": "@ridomin/repo-workflows",
   "version": "0.0.9",
   "description": "",
   "main": "repo-convention.js",
   "type": "module",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
-    "prepare": "standard && npm test"
+    "prepare": "standard && npm test",
+    "add-model": "node node_modules/@ridomin/repo-scripts/tools/add-model.js"
   },
   "repository": {
     "type": "git",
@@ -24,8 +25,7 @@
     "standard": "^14.3.4"
   },
   "dependencies": {
-    "jsonata": "^1.8.3",
-    "mkdirp": "^1.0.4"
+    "@ridomin/repo-scripts": "0.0.9"
   },
   "standard": {
     "globals": [

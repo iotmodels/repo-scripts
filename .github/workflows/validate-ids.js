@@ -1,7 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 
-import { checkIds } from '../../repo-convention.js'
+import { checkIds } from '@ridomin/repo-scripts'
 
 for (let i = 2; i < process.argv.length; i++) {
   const file = path.normalize((path.join(process.cwd(), process.argv[i])))
