@@ -1,0 +1,44 @@
+name: validate-models
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'dtmi/**'
+
+jobs:
+  validate-models:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+
+      - name: Configure GitHub feed
+        run: dotnet nuget add source https://nuget.pkg.github.com/Azure/index.json -n github -u Azure -p ${{secrets.GITHUB_TOKEN}} --store-password-in-clear-text
+
+      - name: Install resolver client
+        run:  dotnet tool install -g dmr-client --add-source https://nuget.pkg.github.com/Azure/index.json
+
+      - name: Parse Models
+        run: |
+          for f in  ${{ steps.files.outputs.added_modified }};
+          do
+              if [[ $f == *"dtmi/"* ]]
+              then
+                  echo "validating $f"
+                  dmr-client validate --model-file $f --repository $PWD
+                  if [ $? -eq 0 ]
+                  then
+                      echo "validation ok: $f"
+                  else
+                      echo "error validating model"
+                      exit 1
+                  fi
+              else
+                echo "skipping $f"
+              fi
+          done
+        shell: bash
