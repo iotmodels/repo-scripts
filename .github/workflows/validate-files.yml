@@ -1,6 +1,9 @@
 name: validate-files
 
 on:
+  push:
+    branches: [rido/*]
+
   pull_request:
     branches: [main]
     paths:
