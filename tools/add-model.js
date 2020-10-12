@@ -1,7 +1,7 @@
-const fs = require('fs')
-const path = require('path')
-const mkdirp = require('mkdirp')
-const { dtmiToPath, checkIds } = require('../repo-convention.js')
+import fs from 'fs'
+import path from 'path'
+import mkdirp from 'mkdirp'
+import { dtmiToPath, checkIds } from '../repo-convention.js'
 
 const createInterfaceFromFile = file => {
   const jsonDtdl = JSON.parse(fs.readFileSync(file, 'utf-8'))
