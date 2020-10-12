@@ -1,5 +1,5 @@
 import path from 'path'
-import { checkDtmiPathFromFile } from '../../repo-convention'
+import { checkDtmiPathFromFile } from '../../repo-convention.js'
 
 for (let i = 1; i < process.argv.length; i++) {
   const file = path.normalize(process.argv[i])
