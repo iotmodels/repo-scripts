@@ -2,24 +2,10 @@ import fs from 'fs'
 import path from 'path'
 import jsonata from 'jsonata'
 
-/**
- * @description Validates DTMI with RegEx from https://github.com/Azure/digital-twin-model-identifier#validation-regular-expressions
- * @param {string} dtmi
- */
 export const isDtmi = dtmi => RegExp('^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$').test(dtmi)
 
-/**
- * @description Converts DTMI to /dtmi/com/example/device-1.json path.
- * @param {string} dtmi
- * @returns {string}
- */
 export const dtmiToPath = dtmi => isDtmi(dtmi) ? `/${dtmi.toLowerCase().replace(/:/g, '/').replace(';', '-')}.json` : null
 
-/**
- * @description Returns external IDs in `extend` and `component` elements
- * @param {{ extends: any[]; contents: any[]; }} rootJson
- * @returns {Array<string>}
- */
 export const getDependencies = rootJson => {
   let deps = []
   if (Array.isArray(rootJson)) {
@@ -46,11 +32,6 @@ export const getDependencies = rootJson => {
   return deps
 }
 
-/**
- * @description Checks all dependencies are available
- * @param {Array<string>} deps
- * @returns {boolean}
- */
 export const checkDependencies = dtmi => {
   let result = true
   const fileName = path.join(__dirname, dtmiToPath(dtmi))
@@ -74,11 +55,6 @@ export const checkDependencies = dtmi => {
   return result
 }
 
-/**
- * @description Validates all internal IDs follow the namepspace set by the root id
- * @param {any} dtdlJson
- * @returns {boolean}
- */
 export const checkIds = dtdlJson => {
   const rootId = dtdlJson['@id']
   console.log(`checkIds: validating root ${rootId}`)

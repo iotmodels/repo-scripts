@@ -24,13 +24,15 @@
     "standard": "^14.3.4"
   },
   "dependencies": {
-    "jsonata": "^1.8.3"
+    "jsonata": "^1.8.3",
+    "mkdirp": "^1.0.4"
   },
-  "standard" : {
-    "globals" : [
-      "test", "expect"
+  "standard": {
+    "globals": [
+      "test",
+      "expect"
     ],
-    "ignore" : [
+    "ignore": [
       "out/*",
       "*.d.ts"
     ]
