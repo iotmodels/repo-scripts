@@ -1,5 +1,9 @@
-import * as rc from '../repo-convention.js'
-import * as td from './test-models'
+const rc = require('../repo-convention.js')
+const td = require('./test-models')
+
+test('is valid dtmi', () => {
+  expect(rc.isDtmi('dtmi:with::twosemicolons;1')).toBe(false)
+})
 
 test('invalid dtmi', () => {
   expect(rc.dtmiToPath('')).toBe(null)
@@ -18,7 +22,6 @@ test('get dependencies', () => {
   expect(rc.getDependencies(td.noDepsJson)).toEqual([])
   expect(rc.getDependencies(td.oneDepJson)).toEqual(['dtmi:test:base;1'])
   expect(rc.getDependencies(td.twoDepsJson)).toEqual(['dtmi:test:base;1', 'dtmi:test:onedep:comp1;1'])
-  expect(rc.getDependencies(td.twoDepsJsonExtendsArray)).toEqual(['dtmi:test:base;1', 'dtmi:test:onedep:comp1;1'])
 })
 
 test('check ids', () => {
@@ -27,6 +30,6 @@ test('check ids', () => {
 })
 
 test('checkDtmiPathFromFile', () => {
-  expect(rc.checkDtmiPathFromFile('dtmi/test/onedep-1.json')).toBe(true)
+  expect(rc.checkDtmiPathFromFile('dtmi/azure/devicemanagement/deviceinformation-1.json')).toBe(true)
   expect(rc.checkDtmiPathFromFile('test/badpath.json')).toBe(false)
 })

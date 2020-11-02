@@ -1,12 +1,26 @@
-import fs from 'fs'
-import path from 'path'
-import jsonata from 'jsonata'
+const fs = require('fs')
+const path = require('path')
+const jsonata = require('jsonata')
 
-export const isDtmi = dtmi => RegExp('^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$').test(dtmi)
+/**
+ * @description Validates DTMI with RegEx from https://github.com/Azure/digital-twin-model-identifier#validation-regular-expressions
+ * @param {string} dtmi
+ */
+const isDtmi = dtmi => RegExp('^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$').test(dtmi)
 
-export const dtmiToPath = dtmi => isDtmi(dtmi) ? `/${dtmi.toLowerCase().replace(/:/g, '/').replace(';', '-')}.json` : null
+/**
+ * @description Converts DTMI to /dtmi/com/example/device-1.json path.
+ * @param {string} dtmi
+ * @returns {string}
+ */
+const dtmiToPath = dtmi => isDtmi(dtmi) ? `/${dtmi.toLowerCase().replace(/:/g, '/').replace(';', '-')}.json` : null
 
-export const getDependencies = rootJson => {
+/**
+ * @description Returns external IDs in `extend` and `component` elements
+ * @param {{ extends: any[]; contents: any[]; }} rootJson
+ * @returns {Array<string>}
+ */
+const getDependencies = rootJson => {
   let deps = []
   if (Array.isArray(rootJson)) {
     deps = rootJson.map(d => d['@id'])
@@ -32,7 +46,12 @@ export const getDependencies = rootJson => {
   return deps
 }
 
-export const checkDependencies = dtmi => {
+/**
+ * @description Checks all dependencies are available
+ * @param {Array<string>} deps
+ * @returns {boolean}
+ */
+const checkDependencies = dtmi => {
   let result = true
   const fileName = path.join(__dirname, dtmiToPath(dtmi))
   console.log(`Validating dependencies for ${dtmi} from ${fileName}`)
@@ -55,7 +74,12 @@ export const checkDependencies = dtmi => {
   return result
 }
 
-export const checkIds = dtdlJson => {
+/**
+ * @description Validates all internal IDs follow the namepspace set by the root id
+ * @param {any} dtdlJson
+ * @returns {boolean}
+ */
+const checkIds = dtdlJson => {
   const rootId = dtdlJson['@id']
   console.log(`checkIds: validating root ${rootId}`)
   const ids = jsonata('**."@id"').evaluate(dtdlJson)
@@ -63,15 +87,19 @@ export const checkIds = dtdlJson => {
     for (let i = 0; i < ids.length; i++) {
       const id = ids[i]
       console.log('found: ' + id)
+      if (!isDtmi(id)) {
+        console.log(`ERROR: Document id ${id} is not a valid DTMI.`)
+        return false
+      }
       if (!id.split(';')[0].startsWith(rootId.split(';')[0])) {
-        console.log(`ERROR: Document id ${id} does not satisfy the root id ${rootId}`)
+        console.log(`ERROR: Document id ${id} does not satisfy the root id ${rootId}.`)
         return false
       }
     }
-    console.log(`checkIds: validated ${ids.length} ids`)
+    console.log(`checkIds: Validated: ${ids.length} ids are under the root DTMI.`)
     return true
   } else {
-    console.log('checkIds: ids not found')
+    console.log('checkIds: Validated: Global ids not found.')
     return true
   }
 }
@@ -81,12 +109,12 @@ export const checkIds = dtdlJson => {
  * @param {string} file
  * @returns {boolean}
  */
-export const checkDtmiPathFromFile = file => {
+const checkDtmiPathFromFile = file => {
   const model = JSON.parse(fs.readFileSync(file, 'utf-8'))
   const id = model['@id']
   if (id) {
-    const expectedPath = path.normalize(dtmiToPath(model['@id']))
-    if (path.normalize('/' + file) !== expectedPath) {
+    const expectedPath = path.join(process.cwd(), dtmiToPath(model['@id']))
+    if (path.resolve(file) !== expectedPath) {
       console.log(`ERROR: in current path ${path.normalize(file)}, expecting ${expectedPath}.`)
       return false
     } else {
@@ -98,4 +126,4 @@ export const checkDtmiPathFromFile = file => {
     return false
   }
 }
-// module.exports = { dtmiToPath, isDtmi, checkIds, getDependencies, checkDependencies, checkDtmiPathFromFile }
+module.exports = { dtmiToPath, isDtmi, checkIds, getDependencies, checkDependencies, checkDtmiPathFromFile }

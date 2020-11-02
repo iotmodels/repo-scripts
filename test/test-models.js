@@ -1,4 +1,4 @@
-export const noDepsJson = {
+const noDepsJson = {
   '@context': 'dtmi:dtdl:context;2',
   '@id': 'dtmi:test:onedep;1',
   '@type': 'Interface',
@@ -6,7 +6,7 @@ export const noDepsJson = {
   contents: []
 }
 
-export const oneDepJson = {
+const oneDepJson = {
   '@context': 'dtmi:dtdl:context;2',
   '@id': 'dtmi:test:onedep;1',
   '@type': 'Interface',
@@ -15,7 +15,7 @@ export const oneDepJson = {
   contents: []
 }
 
-export const globalId = {
+const globalId = {
   '@context': 'dtmi:dtdl:context;2',
   '@id': 'dtmi:test:twodeps;1',
   '@type': 'Interface',
@@ -31,7 +31,7 @@ export const globalId = {
   ]
 }
 
-export const twoDepsJsonExtendsArray = {
+const twoDepsJson = {
   '@context': 'dtmi:dtdl:context;2',
   '@id': 'dtmi:test:twodeps;1',
   '@type': 'Interface',
@@ -46,17 +46,4 @@ export const twoDepsJsonExtendsArray = {
   ]
 }
 
-export const twoDepsJson = {
-  '@context': 'dtmi:dtdl:context;2',
-  '@id': 'dtmi:test:twodeps;1',
-  '@type': 'Interface',
-  displayName: 'onedep',
-  extends: 'dtmi:test:base;1',
-  contents: [
-    {
-      '@type': 'Component',
-      name: 'temperature',
-      schema: 'dtmi:test:onedep:comp1;1'
-    }
-  ]
-}
+module.exports = { noDepsJson, oneDepJson, twoDepsJson, globalId }
