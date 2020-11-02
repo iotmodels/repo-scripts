@@ -138,6 +138,18 @@ const resolveDtmi = async (dtmi, repo, expanded) => {
   const result = []
   if (!repo) repo = 'https://' + 'devicemodels.azure.com'
   const url = `${repo}${dtmiToPath(dtmi)}`
+
+  if (expanded) {
+    const xurl = url.replace('.json', '.expanded.json')
+    const expRaw = await (await fetch(xurl)).text()
+    const exp = JSON.parse(expRaw)
+    exp.foreach(doc => {
+      const id = doc['@id']
+      result.push({ id, doc })
+    })
+    return result
+  }
+
   const respJson = await (await fetch(url)).json()
   const id = respJson['@id']
   if (id === dtmi) {

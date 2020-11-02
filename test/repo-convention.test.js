@@ -45,3 +45,9 @@ test('resolveDtmi_Deps', async () => {
   console.log(models.length)
   expect(models.length).toBe(3)
 })
+
+test('resolveDtmi_DepsExpanded', async () => {
+  const models = await resolveDtmi('dtmi:Espressif:SensorController;2', null, true)
+  console.log(models.length)
+  expect(models.length).toBe(6)
+})
