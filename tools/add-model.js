@@ -10,7 +10,7 @@ const createInterfaceFromFile = async file => {
 
 const createInterfaceFromJson = async jsonDtdl => {
   const dtmi = jsonDtdl['@id']
-  const fileName = join(process.cwd(), dtmiToPath(dtmi))
+  const fileName = join(process.cwd(), dtmiToPath(dtmi) || '')
   if (existsSync(fileName)) {
     console.log(`WARNING: ID ${dtmi} already exists at ${fileName} . Skipping `)
   } else {
@@ -20,7 +20,7 @@ const createInterfaceFromJson = async jsonDtdl => {
   }
 }
 
-/**
+export/**
  * @description Adds a model to the repo. Validates ids, dependencies and set the right folder/file name
  * @param {string} file
  */
@@ -45,7 +45,7 @@ const main = async () => {
   const id = await addModel(file)
   console.log('added', id)
   if (id && !checkDependencies(id)) {
-    unlinkSync(join(process.cwd(), dtmiToPath(id)))
+    unlinkSync(join(process.cwd(), dtmiToPath(id) || ''))
     console.log('ERROR: Dont forget to include all the dependencies before submitting.')
     process.exit(1)
   }

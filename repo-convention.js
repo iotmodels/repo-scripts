@@ -53,12 +53,12 @@ export/**
  */
 const checkDependencies = dtmi => {
   let result = true
-  const fileName = join(__dirname, dtmiToPath(dtmi))
+  const fileName = join(__dirname, dtmiToPath(dtmi) || '')
   console.log(`Validating dependencies for ${dtmi} from ${fileName}`)
   const dtdlJson = JSON.parse(readFileSync(fileName, 'utf-8'))
   const deps = getDependencies(dtdlJson)
   deps.forEach(d => {
-    const fileName = join(__dirname, dtmiToPath(d))
+    const fileName = join(__dirname, dtmiToPath(d) || '')
     if (existsSync(fileName)) {
       console.log(`Dependency ${d} found`)
       const model = JSON.parse(readFileSync(fileName, 'utf-8'))
@@ -113,7 +113,7 @@ const checkDtmiPathFromFile = file => {
   const model = JSON.parse(readFileSync(file, 'utf-8'))
   const id = model['@id']
   if (id) {
-    const expectedPath = join(process.cwd(), dtmiToPath(model['@id']))
+    const expectedPath = join(process.cwd(), dtmiToPath(model['@id']) || '')
     if (resolve(file) !== expectedPath) {
       console.log(`ERROR: in current path ${normalize(file)}, expecting ${expectedPath}.`)
       return false
