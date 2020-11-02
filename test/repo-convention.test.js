@@ -34,8 +34,14 @@ test('checkDtmiPathFromFile', () => {
   expect(checkDtmiPathFromFile('test/badpath.json')).toBe(false)
 })
 
-test('resolveDtmi', async () => {
+test('resolveDtmi_noDeps', async () => {
   const models = await resolveDtmi('dtmi:azure:DeviceManagement:DeviceInformation;1')
   console.log(models.length)
   expect(models.length).toBe(1)
+})
+
+test('resolveDtmi_Deps', async () => {
+  const models = await resolveDtmi('dtmi:com:example:TemperatureController;1')
+  console.log(models.length)
+  expect(models.length).toBe(3)
 })

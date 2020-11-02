@@ -142,10 +142,11 @@ const resolveDtmi = async (dtmi, repo, expanded) => {
   const id = respJson['@id']
   if (id === dtmi) {
     result.push({ id, respJson })
-    // const deps = getDependencies(respJson)
-    // deps.forEach(async d => {
-    //   result[d] = await (await fetch(`${repo}${dtmiToPath(d)}`)).json()
-    // })
+    const deps = getDependencies(respJson)
+    for await (const d of deps) {
+      const json = await (await fetch(`${repo}${dtmiToPath(d)}`)).json()
+      result.push({ d, json })
+    }
   } else {
     console.error('ERR. Case diff ', id)
   }
