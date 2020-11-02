@@ -1,4 +1,4 @@
-import { isDtmi, dtmiToPath, getDependencies, checkIds, checkDtmiPathFromFile } from '../repo-convention.js'
+import { isDtmi, dtmiToPath, getDependencies, checkIds, checkDtmiPathFromFile, resolveDtmi } from '../repo-convention.js'
 import { noDepsJson, oneDepJson, twoDepsJson, globalId } from './test-models'
 
 test('is valid dtmi', () => {
@@ -32,4 +32,10 @@ test('check ids', () => {
 test('checkDtmiPathFromFile', () => {
   expect(checkDtmiPathFromFile('dtmi/azure/devicemanagement/deviceinformation-1.json')).toBe(true)
   expect(checkDtmiPathFromFile('test/badpath.json')).toBe(false)
+})
+
+test('resolveDtmi', async () => {
+  const models = await resolveDtmi('dtmi:azure:DeviceManagement:DeviceInformation;1')
+  console.log(models.length)
+  expect(models.length).toBe(1)
 })

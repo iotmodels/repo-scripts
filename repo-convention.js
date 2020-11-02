@@ -1,6 +1,7 @@
 import { readFileSync, existsSync } from 'fs'
 import { join, resolve, normalize } from 'path'
 import jsonata from 'jsonata'
+import fetch from 'node-fetch'
 
 export/**
  * @description Validates DTMI with RegEx from https://github.com/Azure/digital-twin-model-identifier#validation-regular-expressions
@@ -125,4 +126,29 @@ const checkDtmiPathFromFile = file => {
     console.log('ERROR: @id not found.')
     return false
   }
+}
+
+export /**
+* @param {string} dtmi
+* @param {string | undefined} [repo]
+* @param {undefined} [expanded]
+* @returns {Array<string, string>}
+*/
+const resolveDtmi = async (dtmi, repo, expanded) => {
+  const result = []
+  if (!repo) repo = 'https://' + 'devicemodels.azure.com'
+  const url = `${repo}${dtmiToPath(dtmi)}`
+  const respJson = await (await fetch(url)).json()
+  const id = respJson['@id']
+  if (id === dtmi) {
+    result.push({ id, respJson })
+    // const deps = getDependencies(respJson)
+    // deps.forEach(async d => {
+    //   result[d] = await (await fetch(`${repo}${dtmiToPath(d)}`)).json()
+    // })
+  } else {
+    console.error('ERR. Case diff ', id)
+  }
+  // console.log(result)
+  return result
 }
