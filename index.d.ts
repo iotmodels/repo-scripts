@@ -32,4 +32,11 @@ declare module '@ridomin/repo-scripts' {
      * @returns {boolean}
      */
     function checkIds(dtdlJson: any): boolean;
+
+    /**
+     * @description Copy DTDL file to the /dtmi/com/model-1.json folder struct
+     * @param file 
+     * @returns The root DTMI of the file, if successfull
+     */
+    function addModel(file: string): string;
 }

@@ -1,9 +1,10 @@
 {
   "name": "@ridomin/repo-scripts",
-  "version": "0.0.10",
+  "version": "0.0.14",
   "description": "",
-  "main": "repo-convention.js",
-  "type": "commonjs",
+  "main": "index.js",
+  "type": "module",
+  "types": "index.d.ts",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "prepare": "standard && npm test"
@@ -20,12 +21,14 @@
   },
   "homepage": "https://github.com/iotmodels/repo-scripts/#readme",
   "devDependencies": {
+    "@types/jest": "^26.0.15",
     "jest": "^26.4.2",
     "standard": "^14.3.4"
   },
   "dependencies": {
     "jsonata": "^1.8.3",
-    "mkdirp": "^1.0.4"
+    "mkdirp": "^1.0.4",
+    "node-fetch": "^2.6.1"
   },
   "standard": {
     "globals": [

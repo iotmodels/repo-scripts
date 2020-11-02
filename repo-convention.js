@@ -1,21 +1,22 @@
-const fs = require('fs')
-const path = require('path')
-const jsonata = require('jsonata')
+import { readFileSync, existsSync } from 'fs'
+import { join, resolve, normalize } from 'path'
+import jsonata from 'jsonata'
+import fetch from 'node-fetch'
 
-/**
+export/**
  * @description Validates DTMI with RegEx from https://github.com/Azure/digital-twin-model-identifier#validation-regular-expressions
  * @param {string} dtmi
  */
 const isDtmi = dtmi => RegExp('^dtmi:[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?(?::[A-Za-z](?:[A-Za-z0-9_]*[A-Za-z0-9])?)*;[1-9][0-9]{0,8}$').test(dtmi)
 
-/**
+export/**
  * @description Converts DTMI to /dtmi/com/example/device-1.json path.
  * @param {string} dtmi
  * @returns {string}
  */
 const dtmiToPath = dtmi => isDtmi(dtmi) ? `/${dtmi.toLowerCase().replace(/:/g, '/').replace(';', '-')}.json` : null
 
-/**
+export/**
  * @description Returns external IDs in `extend` and `component` elements
  * @param {{ extends: any[]; contents: any[]; }} rootJson
  * @returns {Array<string>}
@@ -46,22 +47,22 @@ const getDependencies = rootJson => {
   return deps
 }
 
-/**
+export/**
  * @description Checks all dependencies are available
  * @param {Array<string>} deps
  * @returns {boolean}
  */
 const checkDependencies = dtmi => {
   let result = true
-  const fileName = path.join(__dirname, dtmiToPath(dtmi))
+  const fileName = join(__dirname, dtmiToPath(dtmi) || '')
   console.log(`Validating dependencies for ${dtmi} from ${fileName}`)
-  const dtdlJson = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
+  const dtdlJson = JSON.parse(readFileSync(fileName, 'utf-8'))
   const deps = getDependencies(dtdlJson)
   deps.forEach(d => {
-    const fileName = path.join(__dirname, dtmiToPath(d))
-    if (fs.existsSync(fileName)) {
+    const fileName = join(__dirname, dtmiToPath(d) || '')
+    if (existsSync(fileName)) {
       console.log(`Dependency ${d} found`)
-      const model = JSON.parse(fs.readFileSync(fileName, 'utf-8'))
+      const model = JSON.parse(readFileSync(fileName, 'utf-8'))
       if (model['@id'] !== d) {
         console.error(`ERROR: LowerCase issue with dependent id ${d}. Was ${model['@id']}. Aborting`)
         result = result && true
@@ -74,7 +75,7 @@ const checkDependencies = dtmi => {
   return result
 }
 
-/**
+export/**
  * @description Validates all internal IDs follow the namepspace set by the root id
  * @param {any} dtdlJson
  * @returns {boolean}
@@ -104,18 +105,18 @@ const checkIds = dtdlJson => {
   }
 }
 
-/**
+export/**
  * @description Checks if the folder/name convention matches the DTMI
  * @param {string} file
  * @returns {boolean}
  */
 const checkDtmiPathFromFile = file => {
-  const model = JSON.parse(fs.readFileSync(file, 'utf-8'))
+  const model = JSON.parse(readFileSync(file, 'utf-8'))
   const id = model['@id']
   if (id) {
-    const expectedPath = path.join(process.cwd(), dtmiToPath(model['@id']))
-    if (path.resolve(file) !== expectedPath) {
-      console.log(`ERROR: in current path ${path.normalize(file)}, expecting ${expectedPath}.`)
+    const expectedPath = join(process.cwd(), dtmiToPath(model['@id']) || '')
+    if (resolve(file) !== expectedPath) {
+      console.log(`ERROR: in current path ${normalize(file)}, expecting ${expectedPath}.`)
       return false
     } else {
       console.log(`FilePath ${file} for ${id} seems OK.`)
@@ -126,4 +127,41 @@ const checkDtmiPathFromFile = file => {
     return false
   }
 }
-module.exports = { dtmiToPath, isDtmi, checkIds, getDependencies, checkDependencies, checkDtmiPathFromFile }
+
+export /**
+* @param {string} dtmi
+* @param {string | undefined} [repo]
+* @param {undefined} [expanded]
+* @returns {Array<string, string>}
+*/
+const resolveDtmi = async (dtmi, repo, expanded) => {
+  const result = []
+  if (!repo) repo = 'https://' + 'devicemodels.azure.com'
+  const url = `${repo}${dtmiToPath(dtmi)}`
+
+  if (expanded) {
+    const xurl = url.replace('.json', '.expanded.json')
+    const expRaw = await (await fetch(xurl)).text()
+    const exp = JSON.parse(expRaw)
+    exp.foreach(doc => {
+      const id = doc['@id']
+      result.push({ id, doc })
+    })
+    return result
+  }
+
+  const respJson = await (await fetch(url)).json()
+  const id = respJson['@id']
+  if (id === dtmi) {
+    result.push({ id, respJson })
+    const deps = getDependencies(respJson)
+    for await (const d of deps) {
+      const json = await (await fetch(`${repo}${dtmiToPath(d)}`)).json()
+      result.push({ d, json })
+    }
+  } else {
+    console.error('ERR. Case diff ', id)
+  }
+  // console.log(result)
+  return result
+}

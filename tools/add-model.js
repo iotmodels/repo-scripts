@@ -1,31 +1,31 @@
-const fs = require('fs')
-const path = require('path')
-const mkdirp = require('mkdirp')
-const { dtmiToPath, checkIds, checkDependencies } = require('../repo-convention.js')
+import { readFileSync, existsSync, writeFileSync, unlinkSync } from 'fs'
+import { join, dirname } from 'path'
+import mkdirp from 'mkdirp'
+import { dtmiToPath, checkIds, checkDependencies } from '../repo-convention.js'
 
 const createInterfaceFromFile = async file => {
-  const jsonDtdl = JSON.parse(fs.readFileSync(file, 'utf-8'))
+  const jsonDtdl = JSON.parse(readFileSync(file, 'utf-8'))
   await createInterfaceFromJson(jsonDtdl)
 }
 
 const createInterfaceFromJson = async jsonDtdl => {
   const dtmi = jsonDtdl['@id']
-  const fileName = path.join(process.cwd(), dtmiToPath(dtmi))
-  if (fs.existsSync(fileName)) {
+  const fileName = join(process.cwd(), dtmiToPath(dtmi) || '')
+  if (existsSync(fileName)) {
     console.log(`WARNING: ID ${dtmi} already exists at ${fileName} . Skipping `)
   } else {
-    await mkdirp(path.dirname(fileName))
-    fs.writeFileSync(fileName, JSON.stringify(jsonDtdl, null, 2))
+    await mkdirp(dirname(fileName))
+    writeFileSync(fileName, JSON.stringify(jsonDtdl, null, 2))
     console.log(`Model ${dtmi} added successfully to ${fileName}`)
   }
 }
 
-/**
+export/**
  * @description Adds a model to the repo. Validates ids, dependencies and set the right folder/file name
  * @param {string} file
  */
 const addModel = async file => {
-  const rootJson = JSON.parse(fs.readFileSync(file, 'utf-8'))
+  const rootJson = JSON.parse(readFileSync(file, 'utf-8'))
   if (Array.isArray(rootJson)) {
     for await (const d of rootJson) {
       checkIds(d)
@@ -45,7 +45,7 @@ const main = async () => {
   const id = await addModel(file)
   console.log('added', id)
   if (id && !checkDependencies(id)) {
-    fs.unlinkSync(path.join(process.cwd(), dtmiToPath(id)))
+    unlinkSync(join(process.cwd(), dtmiToPath(id) || ''))
     console.log('ERROR: Dont forget to include all the dependencies before submitting.')
     process.exit(1)
   }
