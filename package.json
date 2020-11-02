@@ -1,9 +1,9 @@
 {
   "name": "@ridomin/repo-scripts",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "",
-  "main": "repo-convention.js",
-  "type": "commonjs",
+  "main": "index.js",
+  "type": "module",
   "scripts": {
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "prepare": "standard && npm test"
